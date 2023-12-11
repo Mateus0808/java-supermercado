@@ -18,6 +18,7 @@ public class ProdutoUnitario extends Produto {
         super(codigo, nome, valor);
     }
 
+    //@ also
     /*@ public normal_behavior
       @ requires qtd >= 0;
       @ assignable \nothing;

@@ -31,36 +31,49 @@ public class Funcionario implements IOperacoesDoEstoque{
         this.senha = senha;
     }
 
+    //@ ensures this.nome != null && \result.equals(this.nome);
+    //@ pure
     public String getNome() {
         return nome;
     }
 
+    //@ requires nome != null && !nome.isEmpty();
     public void setNome(String nome) {
         this.nome = nome;
     }
     
+    //@ ensures this.userName != null && \result.equals(this.userName);
+    //@ pure
     public String getUserName() {
         return userName;
     }
 
+    //@ requires userName != null && !userName.isEmpty();
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    //@ ensures this.senha != null && \result.equals(this.senha);
+    //@ pure
     public String getSenha() {
         return senha;
     }
 
+    //@ requires senha != null && !senha.isEmpty();
     public void setSenha(String senha) {
         this.senha = senha;
     }
 
+    //@ also
+    //@ requires produto != null && quantidade >= 0.0;
     @Override
     public void adicionarProduto(Produto produto, double quantidade) {
         //this.estoqueDeProdutos.adicionarProduto(produto, quantidade);
         EstoqueDeProdutos.adicionarProduto(produto, quantidade);
     }
 
+    //@ also
+    //@ requires codigo != null && quantidade >= 1.0;
     @Override
     public void removerProduto(String codigo, double quantidade) {
         EstoqueDeProdutos.removerProduto(codigo, quantidade);

@@ -11,38 +11,58 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 /**
  *
  * @author Richiely Batista, Filipe Maciel
  */
 public class EstoqueDeProdutos {
+    /*@
+      @ public static invariant estoque != null;
+      @ public static invariant (\forall String codigo; estoque.containsKey(codigo) ==> estoque.get(codigo) != null);
+    @*/
     // key = codigo do produto , value = lista com a quantidade do mesmo produto em estoque
     public static Map<String, List<Produto>> estoque = new LinkedHashMap<String, List<Produto>>();;
+
+    
+    //@ private static invariant copiaDoEstoque != null;
     private static Map<String, List<Produto>> copiaDoEstoque;
     private static Produto p;
 
+    //@ ensures \result != null;
     private static Map<String, List<Produto>> getCopiaDoEstoque() {
         return copiaDoEstoque;
     }
 
+    //@ requires copiaDoEstoque != null;
     private static void setCopiaDoEstoque(Map<String, List<Produto>> copiaDoEstoque) {
         copiaDoEstoque = copiaDoEstoque;
     }
     
+    //@ assignable estoque;
+    //@ requires produto instanceof ProdutoUnitario || produto instanceof ProdutoQuilo;
+    //@ public normal_behavior 
+    //@     requires produto != null && quantidade >= 0;
+    //@     ensures estoque.containsKey(produto.getCodigo());
+    //@     ensures estoque.get(produto.getCodigo()).size() == \old(estoque.get(produto.getCodigo()).size() + quantidade);
     public static void adicionarProduto(Produto produto, double quantidade){
         List<Produto> produtosDoCodigo;
         String codigo = produto.getCodigo();
         
+        //@ refining requires codigo != "";
+        //@ requires estoque.containsKey(codigo);
+        //@ assignable produtosDoCodigo;
+        //@ ensures produtosDoCodigo == estoque.get(codigo);
         if(estoque.containsKey(codigo)){
             produtosDoCodigo = estoque.get(codigo);
             
             if (produtosDoCodigo.get(0).getNome().equals(produto.getNome())) {
+                //@ refining ensures (\forall ProdutoUnitario p; produtosDoCodigo.contains(p); p == produto);
                 if (produto instanceof ProdutoUnitario) {
                     while (quantidade > 0) {                
                         produtosDoCodigo.add(produto);
                         quantidade--;
                     }
+                    //@ assert quantidade == 0;
                 }
                 else if (produto instanceof ProdutoQuilo) {
                     ProdutoQuilo pdt = ObtenhaProdutoQuiloTemporario(produto);
@@ -66,6 +86,7 @@ public class EstoqueDeProdutos {
                     produtosDoCodigo.add(produto);
                     quantidade--;
                 }
+                //@ assert quantidade == 0;
             } 
             else if (produto instanceof ProdutoQuilo) {
                 produtosDoCodigo.add(produto);
@@ -161,7 +182,11 @@ public class EstoqueDeProdutos {
         }
         System.out.println();
     }
- 
+    
+    //@ requires codigo != null;
+    //@ ensures \result >= 0.0;
+    //@ ensures \result == 0.0 
+    //@    || (\exists Produto p; estoque.get(codigo).contains(p); \result == p.calcularValor(1));
     public static double precoPorCodigo(String codigo){
         if(estoque.containsKey(codigo)){
             Iterator it = EstoqueDeProdutos.estoque.get(codigo).iterator();

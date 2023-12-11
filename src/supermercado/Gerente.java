@@ -21,6 +21,7 @@ import java.util.stream.Stream;
  */
 public class Gerente extends Funcionario {
     
+    //@ pure
     public Gerente(String nome, String userName, String senha) {
         super(nome, userName, senha);
         EstoqueDeProdutos.copiarEstoque();

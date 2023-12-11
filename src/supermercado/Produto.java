@@ -18,8 +18,8 @@ public abstract class Produto {
     private /*@ spec_public @*/ String codigo;
     private /*@ spec_public @*/ double valor;
 
-    //@ requires codigo != null && !codigo.isEmpty();
-    //@ requires nome != null && !nome.isEmpty();
+    //@ requires codigo != null && !codigo.equals("");
+    //@ requires nome != null && !nome.equals("");
     //@ requires valor >= 0.0;
     //@ ensures this.valor == valor;
     //@ pure
@@ -51,22 +51,26 @@ public abstract class Produto {
     }    
     
     //@ ensures \result == this.nome;
+    //@ pure
     public String getNome() {
     	return nome;
     }
     
     //@ ensures \result == this.codigo;
+    //@ pure
     public String getCodigo() {
     	return codigo;
     }
 
     //@ ensures \result == this.valor;    
+    //@ pure
     public double getValor() {
     	return valor;
     }
 
     //@ requires qtd >= 0.0;
     //@ ensures \result >= 0.0;
+    //@ pure
     public abstract double calcularValor(double qtd);
-    
+
 }

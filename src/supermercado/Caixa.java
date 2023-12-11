@@ -7,22 +7,30 @@ import java.util.List;
 import java.util.Map;
 
 public class Caixa {
-    private ArrayList<Venda> vendas;
-    private Funcionario operadorCaixa;
-    private int numeroDoCaixa;
-    private Balanca balanca;
+    //@ public invariant vendas != null;
+    //@ public invariant numeroDoCaixa > 0;
+    private /*@ spec_public @*/ ArrayList<Venda> vendas;
+    private /*@ spec_public nullable @*/ Funcionario operadorCaixa;
+    private /*@ spec_public @*/ int numeroDoCaixa;
     
+    //@ requires numero > 0 && operador != null;
+    //@ ensures vendas.isEmpty();
+    //@ ensures operadorCaixa != null;
+    //@ ensures numeroDoCaixa == numero;
+    //@ pure
     public Caixa(int numero, OperadorDeCaixa operador){
         this.numeroDoCaixa = numero;
         this.operadorCaixa = operador;
-        this.balanca = new Balanca();
-        vendas = new ArrayList<>();
+        vendas = new ArrayList<Venda>();
     }    
 
+    //@ requires numero > 0;
+    //@ ensures vendas.isEmpty() && this.numeroDoCaixa == numero && operadorCaixa == null;
+    //@ pure
     public Caixa(int numero){
         this.numeroDoCaixa = numero;
-        this.balanca = new Balanca();
-        vendas = new ArrayList<>();
+        this.operadorCaixa = null;
+        vendas = new ArrayList<Venda>();
     } 
     
     public void relatorioCaixa(){
@@ -53,10 +61,16 @@ public class Caixa {
         this.numeroDoCaixa = numeroDoCaixa;
     }
 
+    //@ public normal_behavior
+    //@   ensures (\result == null || \result instanceof Funcionario);
+    //@ pure helper
     public Funcionario getOperadorCaixa() {
         return operadorCaixa;
     }
 
+    //@ assignable this.operadorCaixa;
+    //@ requires operadorCaixa != null && operadorCaixa instanceof Funcionario;
+    //@ ensures this.operadorCaixa == operadorCaixa;
     public void setOperadorCaixa(Funcionario  operadorCaixa) {
         this.operadorCaixa = operadorCaixa;
     }
@@ -65,12 +79,16 @@ public class Caixa {
         
     }
 
+    //@ requires valorDaUnidadeProduto >= 0 && quantidade >= 0;
+    //@ ensures \result == valorDaUnidadeProduto * quantidade;
     private double calcularValorPorItem(double valorDaUnidadeProduto, int quantidade){
-        return balanca.calcularValorPorItem(valorDaUnidadeProduto, quantidade);
+        return Balanca.calcularValorPorItem(valorDaUnidadeProduto, quantidade);
     }
     
+    //@ requires valorDoPeso >= 0 && quantidade >= 0;
+    //@ ensures \result == valorDoPeso * quantidade;
     private double calcularValorPorPeso(double valorDoPeso, double quantidade){
-        return balanca.calcularValorPorPeso(valorDoPeso, quantidade);
+        return Balanca.calcularValorPorPeso(valorDoPeso, quantidade);
     }
     
     @Override
@@ -78,12 +96,15 @@ public class Caixa {
          return "Caixa " + numeroDoCaixa;        
     }
     
+    //@ requires cliente != null;
+    //@ ensures \result != null ==> vendas.contains(\result);
+    //@ ensures (\result != null && \result instanceof Venda) || \result == null;
     public Venda iniciarVenda(Cliente cliente){
         Venda venda = new Venda(this, cliente);
         venda.vender();
         boolean pagamento = venda.formaDePagamento();
         if(pagamento){
-             vendas.add(venda);
+            vendas.add(venda);
         }else{
             Utilitario.ImprimaMensagem("*  !!!! FALHA AO COMPRAR !!!!  *");
             return null;

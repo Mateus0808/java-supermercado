@@ -109,7 +109,6 @@ public class CarrinhoDeCompras{
     //@           produtos.contains(produto_devolucao)) ==> 
     //@           ((produto_devolucao instanceof ProdutoUnitario ||
     //@            (produto_devolucao instanceof ProdutoQuilo))));
-    //@ ensure produtosCarrinho.size() == 0;
     public void devolverProdutosCarrinho(){
         if(this.produtosCarrinho.size() > 0){
             String codigo;
@@ -230,7 +229,7 @@ public class CarrinhoDeCompras{
        return valorTotal;
     }
 
-    //@ ensures /result == this.valor    
+    //@ ensures \result == this.valorCompra;
     //@ pure
     public double calcularValorCompra(){  
         return this.getValorCompra();

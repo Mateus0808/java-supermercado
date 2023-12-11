@@ -42,7 +42,7 @@ public class ProdutoQuilo extends Produto{
         }
     }
     
-
+    //@ also
     //@ requires quilos >= 0.0;
     //@ ensures \result >= 0.0;
     @Override
