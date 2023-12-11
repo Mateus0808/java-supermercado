@@ -29,6 +29,7 @@ public class EstoqueDeProdutos {
     private static Produto p;
 
     //@ ensures \result != null;
+    //@ pure
     private static Map<String, List<Produto>> getCopiaDoEstoque() {
         return copiaDoEstoque;
     }

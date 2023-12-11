@@ -16,6 +16,7 @@ public class CarrinhoDeCompras{
     private Map<String, List<Produto>> produtosCarrinho;
     private /*@ spec_public @*/ double valorCompra;
     
+    //@ public initially produtosCarrinho != null && valorCompra == 0.0;
     //@ ensures produtosCarrinho != null && valorCompra == 0.0;
     //@ ensures produtosCarrinho instanceof LinkedHashMap;
     //@ pure

@@ -9,6 +9,7 @@ public class Cliente {
     private /*@ spec_public @*/ CarrinhoDeCompras carrinho;
     
     //@ ensures carrinho != null;
+    //@ pure
     public Cliente(){
         this.carrinho = new CarrinhoDeCompras();
     }
@@ -21,7 +22,7 @@ public class Cliente {
 
     //Para realizar a compra, o cliente escolhe um caixa disponível
     //@ requires caixa != null;
-    //@ ensures true;
+    //@ ensures this != null;
     public void realizarCompra(Caixa caixa){
         caixa.iniciarVenda(this);
     }

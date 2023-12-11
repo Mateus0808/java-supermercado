@@ -18,6 +18,7 @@ public abstract class Produto {
     private /*@ spec_public @*/ String codigo;
     private /*@ spec_public @*/ double valor;
 
+    //@ public initially valor >= 0.0;
     //@ requires codigo != null && !codigo.equals("");
     //@ requires nome != null && !nome.equals("");
     //@ requires valor >= 0.0;

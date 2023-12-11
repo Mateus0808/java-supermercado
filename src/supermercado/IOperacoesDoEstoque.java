@@ -12,10 +12,12 @@ package supermercado;
 interface IOperacoesDoEstoque {
 
     //@ requires produto != null && quantidade >= 0.0;
-    public void adicionarProduto(Produto produto, double quantidade);
+    public void adicionarProduto(
+        Produto produto, double quantidade);
 
     //@ requires codigo != null && quantidade >= 1;
-    public void removerProduto(String codigo, double quantidade);
+    public void removerProduto(
+        String codigo, double quantidade);
     
     public void mostrarEstoque();
 }

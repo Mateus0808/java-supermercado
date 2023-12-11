@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Caixa {
-    //@ public invariant vendas != null;
+    //@ public invariant vendas != null && vendas.size() >= 0;
     //@ public invariant numeroDoCaixa > 0;
     private /*@ spec_public @*/ ArrayList<Venda> vendas;
     private /*@ spec_public nullable @*/ Funcionario operadorCaixa;
@@ -45,18 +45,28 @@ public class Caixa {
         }
     }
     
+    //@ ensures \result == this.vendas;
+    //@ pure
     public ArrayList<Venda> getVendas() {
         return vendas;
     }
 
+    //@ requires vendas != null;
+    //@ assignable this.vendas;
+    //@ ensures this.vendas == vendas;
     public void setVendas(ArrayList<Venda> vendas) {
         this.vendas = vendas;
     }
     
+    //@ ensures \result == this.numeroDoCaixa;
+    //@ pure
     public int getNumeroDoCaixa() {
         return numeroDoCaixa;
     }
 
+    //@ requires numeroDoCaixa > 0;
+    //@ assignable this.numeroDoCaixa;
+    //@ ensures this.numeroDoCaixa == numeroDoCaixa;
     public void setNumeroDoCaixa(int numeroDoCaixa) {
         this.numeroDoCaixa = numeroDoCaixa;
     }
@@ -98,6 +108,7 @@ public class Caixa {
     
     //@ requires cliente != null;
     //@ ensures \result != null ==> vendas.contains(\result);
+    //@ ensures \result == null ==> null;
     //@ ensures (\result != null && \result instanceof Venda) || \result == null;
     public Venda iniciarVenda(Cliente cliente){
         Venda venda = new Venda(this, cliente);
